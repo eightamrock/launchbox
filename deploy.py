@@ -4,10 +4,14 @@ import pytz
 import datetime
 import json
 from libs import requests
+import ConfigParser
 
-owner = 'eightamrock'
-repo = 'launchbox'
-token = '' #insert use auth token here
+config = ConfigParser.ConfigParser()
+config.read('config.cfg')
+
+owner = config.get('github', 'owner')
+repo = config.get('github', 'repository')
+token = config.get('github', 'token')
 headers = {
   'Authorization': "token "+token,
   'User-Agent': 'LaunchBox'
