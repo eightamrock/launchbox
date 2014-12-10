@@ -1,12 +1,14 @@
 #!/usr/bin/python
 
 import time
-import socket
 import RPi.GPIO as GPIO
 import urllib2
 import pytz
 import datetime
 import json
+import socket
+import fcntl
+import struct
 from libs import requests
 import ConfigParser
 from libs.matrix_keypad.rpi_keypad import keypad
@@ -57,12 +59,19 @@ lcd.clear()
 lcd.backlight(True)
 
 # Send IP to screen for 10 seconds
-host = socket.gethostname()
-my_ip = socket.gethostbyname(host)
-lcd.message("My IP is:\n" + my_ip)
+def get_ip_address(ifname):
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    return socket.inet_ntoa(fcntl.ioctl(
+        s.fileno(),
+        0x8915,  # SIOCGIFADDR
+        struct.pack('256s', ifname[:15])
+    )[20:24])
+my_ip = get_ip_address("wlan0")
+lcd.message("My IP is:\n" + str(my_ip))
 time.sleep(10)
 
 # Boot up
+lcd.clear()
 lcd.message("LaunchBox: \nTeam Kraken")
 # arbitrary sleep
 time.sleep(3)
