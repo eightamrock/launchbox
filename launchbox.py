@@ -166,12 +166,12 @@ def launchbox():
         while GPIO.input(brb_switch) == GPIO.LOW:
             time.sleep(0.01)
 
+        GPIO.output(brb_led, GPIO.HIGH)
         merged = merge_pr(code)
         if merged == True:
             # Successful deploy
             lcd.clear()
             lcd.message("Deploy Complete")
-            GPIO.output(brb_led, GPIO.HIGH)
             time.sleep(5)
             launchbox()
         else:
