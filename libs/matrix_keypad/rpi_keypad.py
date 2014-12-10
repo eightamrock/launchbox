@@ -15,7 +15,7 @@ class keypad():
                 ["*",0,"#"]
             ]
 
-            self.ROW         = [18,23,24,25]
+            self.ROW         = [18,10,9,25]
             self.COLUMN      = [4,17,22]
 
         elif columnCount is 4:
