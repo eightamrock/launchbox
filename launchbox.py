@@ -112,7 +112,7 @@ def merge_pr(pr):
   payload = {
     'commit_message': "LaunchBox Release - " + timestamp.strftime(time_fmt)
   }
-  url = "https://api.github.com/repos/%s/%s/pulls/%s/merge" % (owner, repo, num)
+  url = "https://api.github.com/repos/%s/%s/pulls/%s/merge" % (owner, repo, pr)
   res = requests.put(url, data=json.dumps(payload), headers=headers)
   if res.json()['merged']:
     return True
