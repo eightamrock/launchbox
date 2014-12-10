@@ -17,9 +17,6 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setup(brb_led, GPIO.OUT)
 GPIO.setup(brb_switch, GPIO.IN)
 
-while True:
-    print GPIO.input(brb_switch)
-
 GPIO.output(brb_led, GPIO.HIGH)
 
 # Initialize keypad
@@ -75,10 +72,10 @@ def launchbox():
             time.sleep(.25)
             char = getCode("#")
 
-
+    lcd.noCursor()
     lcd.clear()
     lcd.message("PR : " + code + "\n Initialized")
-    time.sleep(5)
+    time.sleep(3)
     # initialize PR 
     # successfully created PR
     # PR Complete light up LED on big red button
@@ -95,6 +92,7 @@ def launchbox():
     lcd.clear()
     lcd.message("Deployment\n Complete")
     GPIO.output(brb_led, GPIO.HIGH)
+    time.sleep(5)
     launchbox()
 
     # Fail
