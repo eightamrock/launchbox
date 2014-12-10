@@ -181,6 +181,9 @@ def launchbox():
             time.sleep(5)
             launchbox()
     else:
+        lcd.clear()
+        lcd.message("PR NOT VALID!\nSon.....")
+        time.sleep(3)
         launchbox()
      
 launchbox()
