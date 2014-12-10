@@ -112,7 +112,7 @@ def merge_pr(pr):
   payload = {
     'commit_message': "LaunchBox Release - " + timestamp.strftime(time_fmt)
   }
-  url = "https://api.github.com/repos/%s/%s/pulls/%s/merge" % (owner, repo, num)
+  url = "https://api.github.com/repos/%s/%s/pulls/%s/merge" % (owner, repo, pr)
   res = requests.put(url, data=json.dumps(payload), headers=headers)
   if res.json()['merged']:
     return True
@@ -166,12 +166,18 @@ def launchbox():
         while GPIO.input(brb_switch) == GPIO.LOW:
             time.sleep(0.01)
 
+        #turn off the light and let us know we are deploying now
+        GPIO.output(brb_led, GPIO.HIGH)
+        lcd.clear()
+        lcd.message("Deploying....")
+        time.sleep(1)
+
+        # Attempt to merge the code
         merged = merge_pr(code)
         if merged == True:
             # Successful deploy
             lcd.clear()
             lcd.message("Deploy Complete")
-            GPIO.output(brb_led, GPIO.HIGH)
             time.sleep(5)
             launchbox()
         else:
