@@ -96,7 +96,7 @@ def is_mergable(data):
   return data['mergeable'] is True and data['state'] == 'open'
 
 def can_deploy(pr):
-
+  can_deploy = False
   while not can_deploy:
     url = "https://api.github.com/repos/%s/%s/pulls/%s" % (owner, repo, pr)
     req = requests.get(url, headers=headers)
