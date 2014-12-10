@@ -158,7 +158,7 @@ def launchbox():
             time.sleep(0.01)
 
         merged = merge_pr(code)
-        if merged == True
+        if merged == True:
             # Successful deploy
             lcd.clear()
             lcd.message("Deploy Complete")
