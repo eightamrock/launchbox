@@ -119,6 +119,11 @@ def merge_pr(pr):
   else :
     return False
 
+def msgSlp(message, s):
+    lcd.clear()
+    lcd.message(message)
+    time.sleep(s)
+
 def launchbox():
     
     # Boot Complete
@@ -146,15 +151,12 @@ def launchbox():
 
     # We now have the PR number lets check it
     lcd.noCursor()
-    lcd.clear()
-    lcd.message("Verifying PR \nPlease Wait")
+    msgSlp("Verifying PR \nPlease Wait", 2)
     is_deployable = can_deploy(code)
-    time.sleep(2)
 
     if is_deployable == True:
-        lcd.clear()
-        lcd.message("PR: " + code + "\nInitialized")
-        time.sleep(3)
+
+        msgSlp("PR: " + code + "\nInitialized", 3)
 
         # its deployable, lets get the part started
         # light up LED on big red button
@@ -168,28 +170,20 @@ def launchbox():
 
         #turn off the light and let us know we are deploying now
         GPIO.output(brb_led, GPIO.HIGH)
-        lcd.clear()
-        lcd.message("Deploying....")
-        time.sleep(1)
+        msgSlp("Deploying....", 1)
 
         # Attempt to merge the code
         merged = merge_pr(code)
         if merged == True:
             # Successful deploy
-            lcd.clear()
-            lcd.message("Deploy Complete")
-            time.sleep(5)
+            msgSlp("Deploy Complete", 5)
             launchbox()
         else:
             # Fail oh noessss.
-            lcd.clear()
-            lcd.message("Deploy Failed")
-            time.sleep(5)
+            msgSlp("Deploy Failed", 5)
             launchbox()
     else:
-        lcd.clear()
-        lcd.message("PR NOT VALID!\nSon.....")
-        time.sleep(3)
+        msgSlp("PR NOT VALID!\nSon.....", 3)
         launchbox()
      
 launchbox()
