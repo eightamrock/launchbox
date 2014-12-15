@@ -68,13 +68,10 @@ def get_ip_address(ifname):
     )[20:24])
 my_ip = get_ip_address("wlan0")
 lcd.message("My IP is:\n" + str(my_ip))
-time.sleep(10)
+time.sleep(5)
 
 # Boot up
-lcd.clear()
-lcd.message("LaunchBox: \nTeam Kraken")
-# arbitrary sleep
-time.sleep(3)
+msgSlp("LaunchBox: \nTeam Kraken", 3)
 
 def digit():
     digitPressed = None
@@ -96,16 +93,14 @@ def is_mergable(data):
   return data['mergeable'] is True and data['state'] == 'open'
 
 def can_deploy(pr):
-  can_deploy = False
-  while not can_deploy:
-    url = "https://api.github.com/repos/%s/%s/pulls/%s" % (owner, repo, pr)
-    req = requests.get(url, headers=headers)
-    results = req.json()
-    can_deploy = req.status_code == 200 and is_mergable(results) and is_target(results)
-    if not can_deploy:
-        return False
-    else:
-        return True
+  url = "https://api.github.com/repos/%s/%s/pulls/%s" % (owner, repo, pr)
+  req = requests.get(url, headers=headers)
+  results = req.json()
+  can_deploy = req.status_code == 200 and is_mergable(results) and is_target(results)
+  if not can_deploy:
+    return False
+  else:
+    return True
 
 def merge_pr(pr):
   timestamp = datetime.datetime.now(pytz.timezone("America/New_York"))
@@ -128,7 +123,7 @@ def launchbox():
     
     # Boot Complete
     lcd.clear()
-    lcd.message("Enter PR: \n")
+    lcd.message("Launch Code: \n")
     lcd.cursor()
 
     # Listen for PR, use # to complete * to clear
@@ -151,12 +146,12 @@ def launchbox():
 
     # We now have the PR number lets check it
     lcd.noCursor()
-    msgSlp("Verifying PR \nPlease Wait", 2)
+    msgSlp("Verifying Code \nPlease Wait", 2)
     is_deployable = can_deploy(code)
 
     if is_deployable == True:
 
-        msgSlp("PR: " + code + "\nInitialized", 3)
+        msgSlp(code + "\nInitialized", 3)
 
         # its deployable, lets get the part started
         # light up LED on big red button
@@ -183,7 +178,7 @@ def launchbox():
             msgSlp("Deploy Failed", 5)
             launchbox()
     else:
-        msgSlp("PR NOT VALID!\nSon.....", 3)
+        msgSlp("CODE INVALID!\nSukka.....", 3)
         launchbox()
      
 launchbox()
