@@ -55,6 +55,11 @@ mcp = MCP230XX_GPIO(bus, address, gpio_count)
 lcd = Adafruit_CharLCD(pin_rs=1, pin_e=2, pins_db=[3,4,5,6], GPIO=mcp, pin_b=7)
 
 # Clear out the LCD and turn on the backlight
+def msgSlp(message, s):
+  lcd.clear()
+  lcd.message(message)
+  time.sleep(s)
+
 lcd.clear()
 lcd.backlight(True)
 
@@ -113,11 +118,6 @@ def merge_pr(pr):
     return True
   else :
     return False
-
-def msgSlp(message, s):
-    lcd.clear()
-    lcd.message(message)
-    time.sleep(s)
 
 def launchbox():
     
